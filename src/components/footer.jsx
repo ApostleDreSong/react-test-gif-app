@@ -1,37 +1,31 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React,{Component} from 'react';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
+import { Link, withRouter, Redirect } from 'react-router-dom';
 
-const useStyles = makeStyles({
-    root: {
+const style = {
+    footerContainer : {
         width: '100%',
-    },
-});
+        marginTop : '25px'
+    }
+};
 
-const menuStyle = {
-    textDecoration : 'none',
-    color : 'blue'
-  }
-
-export default function Footer() {
-    const classes = useStyles();
-    const [value, setValue] = React.useState(0);
-
+class Footer extends Component{
+    reRoute = (route) =>{
+        this.props.history.push(route);
+    };
+    render(){
     return (
-        <Router >
             <BottomNavigation
-                value={value}
-                onChange={(event, newValue) => {
-                    setValue(newValue);
-                }}
                 showLabels
-                className={classes.root}
+                style = {style.footerContainer}
             >
-                <Link style={menuStyle} to="/about"><BottomNavigationAction label="About" icon={<FavoriteIcon />} /></Link>
+                <BottomNavigationAction label="About" icon={<FavoriteIcon />} onClick = {()=>this.reRoute('/about')}/>
             </BottomNavigation>
-        </Router>
     );
+    }
 }
+
+export default withRouter(Footer);
+

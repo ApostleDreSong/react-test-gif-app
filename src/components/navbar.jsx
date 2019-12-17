@@ -86,7 +86,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function NavBar() {
+function NavBar(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -98,6 +98,10 @@ function NavBar() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const reRoute = (route) =>{
+    props.history.push(route);
+  }
 
   return (
       <div className={classes.root}>
@@ -142,12 +146,12 @@ function NavBar() {
           <Divider />
           <List>
             {[['Dashboard', '/dashboard'], ['Transactions', '/transactions']].map((menuItem, index) => (
-              <Link style={menuStyle} to={menuItem[1]} key={menuItem[0]}>
-                <ListItem button>
+              
+                <ListItem button  key={menuItem[0]} onClick = {()=>reRoute(menuItem[1])}>
                   <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
                   <ListItemText primary={menuItem[0]} />
                 </ListItem>
-              </Link>
+              
             ))}
           </List>
         </Drawer>

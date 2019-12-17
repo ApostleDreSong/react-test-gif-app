@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
-import { Box } from '@material-ui/core';
+import { Box, Button } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { addTransaction, clearStore, modifyTransaction, clearModification } from '../store/actions';
 import ReturnedTransactions from './returnedTransactions';
@@ -51,7 +51,6 @@ class Transactions extends Component {
         this.setState({
             modifyIndex: ""
         });
-        this.props.clearModification();
         this.clearScreen();
     };
 
@@ -84,11 +83,13 @@ class Transactions extends Component {
     }
 
     clearScreen = () => {
+    	this.props.clearModification();
         this.setState({
             name: "",
             date: "",
             amount: "",
-            memo: ""
+            memo: "",
+            modifyIndex: ""
         });
     }
 
@@ -127,7 +128,7 @@ class Transactions extends Component {
                     <form id="transactionForm" onSubmit={this.addNewTransaction}>
                         <TextField
                             id="date"
-                            label="Transaction Date"
+                            placeholder="Transaction Date"
                             type="date"
                             InputLabelProps={{
                                 shrink: true,
@@ -138,7 +139,7 @@ class Transactions extends Component {
                         <div>
                             <TextField
                                 name="name"
-                                label="Payee Name"
+                                placeholder="Payee Name"
                                 type="text"
                                 required
                                 value={this.state.name}
@@ -148,7 +149,7 @@ class Transactions extends Component {
                         <div>
                             <TextField
                                 name="amount"
-                                label="Amount"
+                                placeholder="Amount"
                                 value={this.state.amount}
                                 type="number"
                                 onChange={(e) => this.handleChange(e, 'amount')} />
@@ -156,25 +157,25 @@ class Transactions extends Component {
                         <div>
                             <TextField
                                 name="memo"
-                                label="Memo"
+                                placeholder="Memo"
                                 type="text"
                                 InputProps={memo}
                                 value={this.state.memo}
                                 onChange={(e) => this.handleChange(e, 'memo')} />
                         </div>
                         <div>
-                            <button type="submit">
+                            <Button  type="submit" color="primary">
                                 {this.state.modifyIndex === "" ? 'Add' : 'Modify'}
-                            </button>
-                            <button onClick={this.clearScreen}>
+                            </Button >
+                            <Button  onClick={this.clearScreen} color="primary">
                                 Clear
-                        </button>
+                        </Button >
 
                         </div>
                     </form>
-                    <button onClick={this.clearStore}>
+                    {/*<Button  onClick={this.clearStore} variant="contained" color="primary">
                         Clear Store
-                </button>
+                </Button >**/}
                 </Box>
                 <ReturnedTransactions />
             </div>

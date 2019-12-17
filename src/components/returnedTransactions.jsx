@@ -10,6 +10,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Clear from '@material-ui/icons/Clear';
 import Edit from '@material-ui/icons/Edit';
+import GetAppIcon from '@material-ui/icons/GetApp';
+import Button from '@material-ui/icons/Button';
 import { retrieveTransaction, deleteTransaction, clearModification } from '../store/actions';
 
 const StyledTableCell = withStyles(theme => ({
@@ -80,6 +82,14 @@ const ReturnedTransactions = (props) => {
           ))}
         </TableBody>
       </Table>
+      <Button
+        variant="contained"
+        color="default"
+        className={classes.button}
+        startIcon={<GetAppIcon />}
+      >
+        Upload
+      </Button>
     </TableContainer>
   );
 }
