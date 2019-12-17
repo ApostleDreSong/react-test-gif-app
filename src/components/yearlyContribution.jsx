@@ -48,7 +48,7 @@ export default class YearlyContribution extends PureComponent {
         <Legend />
         <Bar dataKey="contribution" fill="#8884d8" />
       </BarChart>
-      <h4>Contribution by Year</h4>
+      <h4>Total contributions by year</h4>
       </div>
     );
   }

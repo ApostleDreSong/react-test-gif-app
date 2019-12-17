@@ -6,7 +6,7 @@ import {
 
 const data = [
   {
-    name: 'Jan', contribution: 4000, amt: 2400,
+    name: 'Jan', contribution: 200, amt: 2400,
   },
   {
     name: 'Feb', contribution: 3000, amt: 2210,
@@ -24,22 +24,22 @@ const data = [
     name: 'Jun', contribution: 2390, amt: 2500,
   },
   {
-    name: 'Jul', contribution: 3490, amt: 2100,
+    name: 'Jul', contribution: 1800, amt: 1800,
   },
   {
-    name: 'Aug', contribution: 3490, amt: 2100,
+    name: 'Aug', contribution: 600, amt: 600,
   },
   {
-    name: 'Sep', contribution: 3490, amt: 2100,
+    name: 'Sep', contribution: 2500, amt: 2500,
   },
   {
-    name: 'Oct', contribution: 3490, amt: 2100,
+    name: 'Oct', contribution: 3000, amt: 3000,
   },
   {
-    name: 'Nov', contribution: 3490, amt: 2100,
+    name: 'Nov', contribution: 2800, amt: 2800,
   },
   {
-    name: 'Dec', contribution: 3490, amt: 2100,
+    name: 'Dec', contribution: 3500, amt: 3500,
   },
 ];
 
@@ -60,11 +60,11 @@ export default class MonthlyContribution extends PureComponent {
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
-          <YAxis />
+          <YAxis unit="#"/>
           <Tooltip />
           <Line type="monotone" dataKey="contribution" stroke="#8884d8" fill="#8884d8" />
         </LineChart>
-        <h4>Contribution by Month</h4>
+        <h4>Contributions by month for the current year</h4>
       </div> 
     );
   }
