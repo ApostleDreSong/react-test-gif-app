@@ -1,26 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import NavBar from './components/navbar';
+import Transactions from './components/transactions';
+import Dashboard from './components/dashboard';
+import About from './components/about';
+import Footer from './components/footer';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistor } from './store';
+import './App.scss';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+	render() {
+		return (
+			<PersistGate loading={null} persistor={persistor}>
+				<div>
+					<Router>
+						<NavBar />
+						<Switch>
+							<Route exact path="/">
+								<Dashboard />
+							</Route>
+							<Route path="/dashboard">
+								<Dashboard />
+							</Route>
+							<Route path="/transactions">
+								<Transactions />
+							</Route>
+							<Route path="/about">
+								<About />
+							</Route>
+						</Switch>
+						<Footer />
+					</Router>
+				</div>
+			</PersistGate>
+		);
+	}
 }
 
 export default App;
