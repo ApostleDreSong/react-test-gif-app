@@ -23,7 +23,8 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
+import MenuBookIcon from '@material-ui/icons/MenuBook';
+import DashboardIcon from '@material-ui/icons/Dashboard';
 import { withRouter} from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
@@ -266,10 +267,10 @@ function NavBar(props) {
           </div>
           <Divider />
           <List>
-            {[['Dashboard', '/dashboard'], ['Transactions', '/transactions']].map((menuItem, index) => (
+            {[['Dashboard', '/dashboard', <DashboardIcon />], ['Transactions', '/transactions', <MenuBookIcon />]].map((menuItem, index) => (
               
                 <ListItem button  key={menuItem[0]} onClick = {()=>reRoute(menuItem[1])}>
-                  <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                  <ListItemIcon>{menuItem[2]}</ListItemIcon>
                   <ListItemText primary={menuItem[0]} />
                 </ListItem>
               
@@ -281,6 +282,8 @@ function NavBar(props) {
     </div>
   );
 }
+
+
 
 
 export default withRouter(NavBar);
