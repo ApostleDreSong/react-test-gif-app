@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Brush,
-  AreaChart, Area,
+  AreaChart, Area
 } from 'recharts';
 
 const data = [
@@ -65,7 +65,7 @@ export default class MonthlyContribution extends PureComponent {
           <Line type="monotone" dataKey="contribution" stroke="#8884d8" fill="#8884d8" />
         </LineChart>
         <h4>Contributions by month for the current year</h4>
-      </div> 
+      </div>
     );
   }
 }

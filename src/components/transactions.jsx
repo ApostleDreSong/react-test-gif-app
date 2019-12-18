@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
-import { Box, Button } from '@material-ui/core';
+import { Box, Button, Paper } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { addTransaction, clearStore, modifyTransaction, clearModification } from '../store/actions';
 import ReturnedTransactions from './returnedTransactions';
@@ -14,7 +14,13 @@ const memo = {
 
 const styles = {
     trx:{
-    	padding : "25px 0"
+    	margin : "30px 10px 10px 10px"
+    },
+    form:{
+        marginBottom : "25px"
+    },
+    input:{
+        marginBottom: '20px'
     }
   };
 
@@ -125,7 +131,7 @@ class Transactions extends Component {
                     width = "100%"
                     flexDirection = "column"
                 >
-                    <form id="transactionForm" onSubmit={this.addNewTransaction}>
+                    <form id="transactionForm" onSubmit={this.addNewTransaction} className={clsx(classes.form)}>
                         <TextField
                             id="date"
                             placeholder="Transaction Date"
@@ -135,6 +141,7 @@ class Transactions extends Component {
                             }}
                             value={this.state.date}
                             onChange={(e) => this.handleChange(e, 'date')}
+                            className={clsx(classes.input)}
                         />
                         <div>
                             <TextField
@@ -144,6 +151,7 @@ class Transactions extends Component {
                                 required
                                 value={this.state.name}
                                 onChange={(e) => this.handleChange(e, 'name')}
+                                className={clsx(classes.input)}
                             />
                         </div>
                         <div>
@@ -152,7 +160,9 @@ class Transactions extends Component {
                                 placeholder="Amount"
                                 value={this.state.amount}
                                 type="number"
-                                onChange={(e) => this.handleChange(e, 'amount')} />
+                                onChange={(e) => this.handleChange(e, 'amount')} 
+                                className={clsx(classes.input)}
+                                />
                         </div>
                         <div>
                             <TextField
@@ -161,7 +171,9 @@ class Transactions extends Component {
                                 type="text"
                                 InputProps={memo}
                                 value={this.state.memo}
-                                onChange={(e) => this.handleChange(e, 'memo')} />
+                                onChange={(e) => this.handleChange(e, 'memo')} 
+                                className={clsx(classes.input)}
+                                />
                         </div>
                         <div>
                             <Button  type="submit" color="primary">
