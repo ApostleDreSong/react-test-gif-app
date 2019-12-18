@@ -11,7 +11,7 @@ import Paper from '@material-ui/core/Paper';
 import Clear from '@material-ui/icons/Clear';
 import Edit from '@material-ui/icons/Edit';
 import GetAppIcon from '@material-ui/icons/GetApp';
-import Button from '@material-ui/icons/Button';
+import {Button} from '@material-ui/core';
 import { retrieveTransaction, deleteTransaction, clearModification } from '../store/actions';
 
 const StyledTableCell = withStyles(theme => ({
@@ -88,7 +88,7 @@ const ReturnedTransactions = (props) => {
         className={classes.button}
         startIcon={<GetAppIcon />}
       >
-        Upload
+        PDF
       </Button>
     </TableContainer>
   );

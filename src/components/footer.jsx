@@ -2,12 +2,16 @@ import React,{Component} from 'react';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import { Link, withRouter, Redirect } from 'react-router-dom';
+import { withRouter} from 'react-router-dom';
 
 const style = {
     footerContainer : {
         width: '100%',
-        marginTop : '25px'
+        marginTop : '25px',
+        backgroundColor: '#252525'
+    },
+    nav : {
+        color : 'white'
     }
 };
 
@@ -21,7 +25,7 @@ class Footer extends Component{
                 showLabels
                 style = {style.footerContainer}
             >
-                <BottomNavigationAction label="About" icon={<FavoriteIcon />} onClick = {()=>this.reRoute('/about')}/>
+                <BottomNavigationAction style = {style.nav} label="About" icon={<FavoriteIcon />} onClick = {()=>this.reRoute('/about')}/>
             </BottomNavigation>
     );
     }
