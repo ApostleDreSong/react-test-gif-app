@@ -26,7 +26,8 @@ const style = {
         textAlign : 'center'
     },
     about : {
-        marginLeft : '20px'
+        marginLeft : '20px',
+        marginRight : '10px',
     }
 };
 

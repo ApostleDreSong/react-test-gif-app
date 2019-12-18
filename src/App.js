@@ -1,21 +1,22 @@
 import React, { Component } from 'react';
-import NavBar from './components/navbar';
+import NavBar from './components/appbar';
 import Transactions from './components/transactions';
 import Dashboard from './components/dashboard';
 import About from './components/about';
 import Footer from './components/footer';
+import {Container} from '@material-ui/core';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor } from './store';
-import './App.scss';
+
 
 class App extends Component {
 	render() {
 		return (
 			<PersistGate loading={null} persistor={persistor}>
-				<div>
 					<Router>
 						<NavBar />
+						<Container fixed>
 						<Switch>
 							<Route exact path="/">
 								<Dashboard />
@@ -30,9 +31,9 @@ class App extends Component {
 								<About />
 							</Route>
 						</Switch>
+						</Container>
 						<Footer />
 					</Router>
-				</div>
 			</PersistGate>
 		);
 	}
