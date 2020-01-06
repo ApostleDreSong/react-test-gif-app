@@ -42,17 +42,22 @@ class About extends Component {
         return (
             <Paper style={style.paperStyle}>
                 <div style={style.imgContainer}>
-                    <img src="https://i.pravatar.cc/500"/>
+                    <img src="https://i.pravatar.cc/500" alt=""/>
                 </div>
                 <div style={style.about}>
                     <h2 style={style.heading}>Damilare ADEMESO</h2>
-                    <p> Dammy is a full-stack Javascript Developer fluent in the following technologies:</p>
+                    <p> Damilare is a full-stack Javascript Developer fluent in the following technologies:</p>
                     <ul>
                         <li>HTML5</li>
                         <li>CSS3</li>
+                        <li>Material UI</li>
                         <li>Bootstrap</li>
                         <li>React.JS</li>
                         <li>Node.JS/Express.JS</li>
+                        <li>PHP</li>
+                        <li>MySQL</li>
+                        <li>Wordpress</li>
+                        <li>Git</li>
                     </ul>
                     <p>He also does a little of hybrid mobile app development with ReacNative.</p>
                     <p>Damilare has development experience with Interswitch, Zijela ICT and SahelConsulting</p>

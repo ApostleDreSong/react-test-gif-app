@@ -57,6 +57,14 @@ const ReturnedTransactions = (props) => {
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="customized table">
+      <Button
+        variant="contained"
+        color="default"
+        className={classes.button}
+        startIcon={<GetAppIcon />}
+      >
+        PDF
+      </Button>
         <TableHead>
           <TableRow>
             <StyledTableCell>Transaction Date</StyledTableCell>
@@ -76,20 +84,12 @@ const ReturnedTransactions = (props) => {
               <StyledTableCell align="right">{eachTransaction.name}</StyledTableCell>
               <StyledTableCell align="right">{eachTransaction.amount}</StyledTableCell>
               <StyledTableCell align="right">{eachTransaction.memo}</StyledTableCell>
-              <StyledTableCell align="right"><Edit onClick={() => retrieveTrx(props, index)} className={classes.icons} /></StyledTableCell>
-              <StyledTableCell align="right"><Clear onClick={() => deleteTrx(props, index)} className={classes.icons} /></StyledTableCell>
+              <StyledTableCell align="right"><Edit onClick={() => retrieveTrx(props, eachTransaction.pointer)} className={classes.icons} /></StyledTableCell>
+              <StyledTableCell align="right"><Clear onClick={() => deleteTrx(props, eachTransaction.pointer)} className={classes.icons} /></StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
       </Table>
-      <Button
-        variant="contained"
-        color="default"
-        className={classes.button}
-        startIcon={<GetAppIcon />}
-      >
-        PDF
-      </Button>
     </TableContainer>
   );
 }

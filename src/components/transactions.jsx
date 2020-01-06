@@ -1,28 +1,31 @@
 import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
-import { Box, Button, Paper } from '@material-ui/core';
+import { Box, Button } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { addTransaction, clearStore, modifyTransaction, clearModification } from '../store/actions';
-import ReturnedTransactions from './returnedTransactions';
+import ReturnedTransactions from './returnedTrx';
 import { withStyles } from '@material-ui/core/styles';
-import {compose} from 'recompose';
+import { compose } from 'recompose';
 import clsx from 'clsx';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 
 const memo = {
     'multiline': true,
 };
 
 const styles = {
-    trx:{
-    	margin : "30px 10px 10px 10px"
+    trx: {
+        margin: "30px 10px 10px 10px"
     },
-    form:{
-        marginBottom : "25px"
+    form: {
+        marginBottom: "25px",
+        width: "100%"
     },
-    input:{
+    input: {
         marginBottom: '20px'
     }
-  };
+};
 
 class Transactions extends Component {
     constructor(props) {
@@ -32,6 +35,7 @@ class Transactions extends Component {
             date: "",
             amount: "",
             memo: "",
+            pointer: "",
             modifyIndex: ""
         };
 
@@ -39,12 +43,13 @@ class Transactions extends Component {
 
     addNewTransaction = (e) => {
         e.preventDefault();
-        if (this.props.modifyArr !== undefined) {
+        if (this.props.modifyIndex !== "") {
             this.props.modifyTransaction({
                 name: this.state.name,
                 date: this.state.date,
                 amount: this.state.amount,
-                memo: this.state.memo
+                memo: this.state.memo,
+                pointer: this.state.pointer
             });
         } else {
             this.props.addTransaction([{
@@ -89,12 +94,13 @@ class Transactions extends Component {
     }
 
     clearScreen = () => {
-    	this.props.clearModification();
+        this.props.clearModification();
         this.setState({
             name: "",
             date: "",
             amount: "",
             memo: "",
+            pointer: "",
             modifyIndex: ""
         });
     }
@@ -104,37 +110,37 @@ class Transactions extends Component {
     };
 
     static getDerivedStateFromProps(props, state) {
-        if (props.modifyIndex !== state.modifyIndex) {
-            if (props.modifyArr !== undefined) {
-                const { name, date, memo, amount } = props.modifyArr[0];
+            if ((props.modifyIndex !== state.modifyIndex) && props.modifyIndex !== "") {
+                const { name, date, memo, amount, pointer } = props.modifyArr[0];
                 return {
                     name: name,
                     date: date,
                     memo: memo,
                     amount: amount,
+                    pointer: pointer,
                     modifyIndex: props.modifyIndex
                 }
             }
-        }
+            
         return null;
     }
 
     render() {
-    	const { classes } = this.props;
+        const { classes } = this.props;
         return (
             <div>
                 <Box
-                	className={clsx(classes.trx)}
+                    className={clsx(classes.trx)}
                     display="flex"
                     alignItems="center"
                     justifyContent="center"
-                    width = "100%"
-                    flexDirection = "column"
+                    width="100%"
+                    flexDirection="column"
                 >
                     <form id="transactionForm" onSubmit={this.addNewTransaction} className={clsx(classes.form)}>
                         <TextField
                             id="date"
-                            placeholder="Transaction Date"
+                            label="Transaction Date"
                             type="date"
                             InputLabelProps={{
                                 shrink: true,
@@ -142,6 +148,8 @@ class Transactions extends Component {
                             value={this.state.date}
                             onChange={(e) => this.handleChange(e, 'date')}
                             className={clsx(classes.input)}
+                            fullWidth
+                            variant="filled"
                         />
                         <div>
                             <TextField
@@ -152,6 +160,15 @@ class Transactions extends Component {
                                 value={this.state.name}
                                 onChange={(e) => this.handleChange(e, 'name')}
                                 className={clsx(classes.input)}
+                                fullWidth
+                                variant="filled"
+                                InputProps={{
+                                    startAdornment: (
+                                      <InputAdornment position="start">
+                                        <AccountCircle />
+                                      </InputAdornment>
+                                    ),
+                                  }}
                             />
                         </div>
                         <div>
@@ -160,9 +177,11 @@ class Transactions extends Component {
                                 placeholder="Amount"
                                 value={this.state.amount}
                                 type="number"
-                                onChange={(e) => this.handleChange(e, 'amount')} 
+                                onChange={(e) => this.handleChange(e, 'amount')}
                                 className={clsx(classes.input)}
-                                />
+                                fullWidth
+                                variant="filled"
+                            />
                         </div>
                         <div>
                             <TextField
@@ -171,23 +190,26 @@ class Transactions extends Component {
                                 type="text"
                                 InputProps={memo}
                                 value={this.state.memo}
-                                onChange={(e) => this.handleChange(e, 'memo')} 
+                                onChange={(e) => this.handleChange(e, 'memo')}
                                 className={clsx(classes.input)}
-                                />
+                                fullWidth
+                                multiline
+                                variant="filled"
+                            />
                         </div>
                         <div>
-                            <Button  type="submit" color="primary">
+                            <Button type="submit" color="primary">
                                 {this.state.modifyIndex === "" ? 'Add' : 'Modify'}
                             </Button >
-                            <Button  onClick={this.clearScreen} color="primary">
+                            <Button onClick={this.clearScreen} color="primary">
                                 Clear
                         </Button >
 
                         </div>
                     </form>
-                    {/*<Button  onClick={this.clearStore} variant="contained" color="primary">
+                    {/* <Button onClick={this.clearStore} variant="contained" color="primary">
                         Clear Store
-                </Button >**/}
+                </Button > */}
                 </Box>
                 <ReturnedTransactions />
             </div>
@@ -207,8 +229,8 @@ const mapStateToProps = (state) => {
     return {
         modifyObj: state.modifierObject,
         modifyArr: state.modifierObject.modifierArray,
-        modifyIndex: state.modifierObject.modifierIndex,
+        modifyIndex: state.modifierObject.modifierIndex
     };
 }
 
-export default compose(withStyles(styles),connect(mapStateToProps, mapDispatchToProps))(Transactions);
+export default compose(withStyles(styles), connect(mapStateToProps, mapDispatchToProps))(Transactions);
