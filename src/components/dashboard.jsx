@@ -6,6 +6,7 @@ import { compose } from 'redux';
 import { singleGif } from '../store/actions';
 import Pagination from "material-ui-flat-pagination";
 import { storeSearch } from '../store/actions';
+import Spinner from './Spinner'
 
 function Dashboard(props) {
     const singleGif = (gif) => {
@@ -20,22 +21,26 @@ function Dashboard(props) {
     }
     return (
         <div>
+            {props.updating ? <Spinner /> : null}
+            {props.error ? "There was an error retrieving your search. Please try again" : null}
+            {props.updating ? null:<h2>{props.searchTerm}</h2>}
             <Grid container style={{ marginTop: "10px" }} spacing={5}>
                 {props.gifContentData.map((gif, index) => {
                     return (
                         <Grid style={{ cursor: "pointer" }} onClick={() => singleGif(gif)} item key={index} xs={6} md={3}>
-                            {console.log(gif)}
                             <img width="100%" height="250px" src={gif.images.original.url} alt="" />
                         </Grid>
                     );
                 })}
             </Grid>
-            <Pagination
-                limit={1}
-                offset={iniOffset}
-                total={props.pagination.total_count}
-                onClick={(e, offset) => handlePage(offset)}
-            />
+            {props.updating ? null :
+                <Pagination
+                    limit={1}
+                    offset={iniOffset}
+                    total={props.pagination.total_count}
+                    onClick={(e, offset) => handlePage(offset)}
+                />
+            }
         </div>
     );
 }
@@ -44,7 +49,9 @@ const MapStateToProps = state => {
     return {
         gifContentData: state.gifContent.data,
         pagination: state.gifContent.pagination,
-        searchTerm: state.searchTerm
+        searchTerm: state.searchTerm,
+        updating: state.updating,
+        error: state.error
     }
 }
 

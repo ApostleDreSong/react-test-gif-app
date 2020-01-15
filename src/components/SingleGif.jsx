@@ -7,7 +7,8 @@ import { compose } from 'redux'
 function singleGif(props) {
     return (
         <Card style={{ marginTop: "10px" }} >
-            <Grid container justifyContent="center">
+            <h2>{props.singleGifContent.title}</h2>
+            <Grid container>
                 <Grid item xs={6} md={3}>
                     <img width="100%" height="250px" src={props.singleGifContent.images.original.url} alt="" />
                 </Grid>
