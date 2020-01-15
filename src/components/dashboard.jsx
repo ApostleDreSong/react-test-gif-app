@@ -21,10 +21,12 @@ function Dashboard(props) {
     }
     return (
         <div>
-            {props.updating ? <Spinner /> : null}
-            {props.error ? "There was an error retrieving your search. Please try again" : null}
-            {props.updating ? null:<h2>{props.searchTerm}</h2>}
             <Grid container style={{ marginTop: "10px" }} spacing={5}>
+                <Grid item xs={12}>
+                    {props.updating ? <Spinner /> : null}
+                    {props.error ? <div style={{ color: "red" }}>There was an error retrieving your search. Please try again...</div> : null}
+                    {props.updating ? null : <h2>{props.searchTerm}</h2>}
+                </Grid>
                 {props.gifContentData.map((gif, index) => {
                     return (
                         <Grid style={{ cursor: "pointer" }} onClick={() => singleGif(gif)} item key={index} xs={6} md={3}>
