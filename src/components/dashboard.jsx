@@ -1,32 +1,27 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
+import {Grid} from '@material-ui/core'
 
-const useStyles = makeStyles(theme => ({
-  dashboardMain : {
-        display : 'flex',
-        justifyContent : 'space-evenly',
-        flexWrap : 'wrap',
-        margin : '30px 10px'
-    },
-    eachChart : {
-        textAlign : 'center',
-        overflow : 'auto',
-        [theme.breakpoints.up('sm')]: {
-            flexBasis : '100%'
-        },
-        [theme.breakpoints.up('md')]: {
-            flexBasis : '45%'
-        },
-    }
-}));
-
-function Dashboard(){
-    const classes = useStyles();
+function Dashboard(props) {
     return (
-        <div className={classes.dashboardMain}>
-
-        </div>
+        <Grid>
+            {props.gifContent.map((gif,index)=>{
+                return (
+                    <div key={index}>
+                        {console.log(gif)}
+                    </div>
+                );
+            })}
+        </Grid>
     );
 }
 
-export default Dashboard;
+const MapStateToProps = state => {
+    return {
+        gifContent : state.gifContent
+    }
+}
+
+export default connect(
+    MapStateToProps,
+)(Dashboard);

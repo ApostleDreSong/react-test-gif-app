@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, { useState, useRef } from 'react';
 import clsx from 'clsx';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
@@ -20,7 +20,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import { withRouter } from 'react-router-dom';
-import axios from 'axios';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { storeSearch } from '../store/actions'
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -91,7 +93,7 @@ function NavBar(props) {
   const [open, setOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   // create our ref to the search input
-const myInput = useRef();
+  const myInput = useRef();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -105,21 +107,15 @@ const myInput = useRef();
     props.history.push(route);
   }
 
-  const search = () =>{
+  const search = () => {
     //Check if search field is not empty
-    if (myInput.current.value.trim() !== ""){
-    //Make API call
-    axios.get(`http://api.giphy.com/v1/gifs/search?q=${searchTerm}&api_key=QowsD5SieJdG8UlGAxisfSMQ9sk8ytrV&limit=5&offset=1`)
-    .then(data=>{
-      console.log(data);
-    })
-    .catch(err=>{
-
-    });
+    if (myInput.current.value.trim() !== "") {
+      //Make API call From store
+      props.storeSearch(searchTerm);
     }
   }
 
-  const updateSearch = (e) =>{
+  const updateSearch = (e) => {
     //Change searchTerm state
     setSearchTerm(e.target.value);
   }
@@ -151,13 +147,13 @@ const myInput = useRef();
                 input: classes.inputInput,
               }}
               inputProps={{ 'aria-label': 'search' }}
-              onChange={e=>updateSearch(e)}
+              onChange={e => updateSearch(e)}
               value={searchTerm}
               inputRef={myInput}
             />
           </div>
-          <Button variant="contained" color="primary" onClick={()=>search()} >
-              Submit
+          <Button variant="contained" color="primary" onClick={() => search()} >
+            Submit
             </Button>
           <div className={classes.grow} />
         </Toolbar>
@@ -192,4 +188,12 @@ const myInput = useRef();
   );
 }
 
-export default withRouter(NavBar);
+const NavStore = connect(
+  null,
+  {storeSearch}
+);
+
+export default compose(
+  NavStore,
+  withRouter
+)(NavBar);

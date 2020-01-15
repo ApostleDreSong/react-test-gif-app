@@ -3,13 +3,15 @@ import {
 } from '../constants/action-types';
 
 const searchState = {
-	searchItem: ""
+	gifContent: []
 };
 
 
 export default function rootReducer(state = searchState, action) {
 	if (action.type === SEARCH) {
-
+		return Object.assign({},state,{
+			gifContent: action.gifContent
+		})
 	}
 	return state;
 }
