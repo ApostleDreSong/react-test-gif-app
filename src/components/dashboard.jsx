@@ -1,15 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {Grid} from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 
 function Dashboard(props) {
     return (
-        <Grid>
-            {props.gifContent.map((gif,index)=>{
+        <Grid container spacing={5}>
+            {props.gifContent.map((gif, index) => {
                 return (
-                    <div key={index}>
-                        {console.log(gif)}
-                    </div>
+                    <Grid item key={index} xs={12}>
+                        <img width="100%" src={gif.images.original.url} alt="" />
+                    </Grid>
                 );
             })}
         </Grid>
@@ -18,7 +18,7 @@ function Dashboard(props) {
 
 const MapStateToProps = state => {
     return {
-        gifContent : state.gifContent
+        gifContent: state.gifContent
     }
 }
 
