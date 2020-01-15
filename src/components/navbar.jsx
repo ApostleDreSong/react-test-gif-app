@@ -26,10 +26,6 @@ const linkStyle = {
   textDecoration : 'none'
 }
 
-const menuStyle = {
-  textDecoration : 'none'
-}
-
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',

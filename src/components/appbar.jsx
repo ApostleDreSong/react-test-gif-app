@@ -1,22 +1,16 @@
-import React from 'react';
+import React, {useState, useRef} from 'react';
 import clsx from 'clsx';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import { fade, makeStyles, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
+import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
-import Badge from '@material-ui/core/Badge';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import MailIcon from '@material-ui/icons/Mail';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import MoreIcon from '@material-ui/icons/MoreVert';
 import Divider from '@material-ui/core/Divider';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -25,7 +19,8 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import { withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -39,7 +34,7 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up('sm')]: {
       display: 'block',
     },
-    cursor : 'pointer'
+    cursor: 'pointer'
   },
   search: {
     position: 'relative',
@@ -93,29 +88,10 @@ const useStyles = makeStyles(theme => ({
 function NavBar(props) {
   const classes = useStyles();
   const theme = useTheme();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [open, setOpen] = React.useState(false);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  const handleProfileMenuOpen = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
-  const handleMobileMenuOpen = event => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
+  const [open, setOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  // create our ref to the search input
+const myInput = useRef();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -125,82 +101,44 @@ function NavBar(props) {
     setOpen(false);
   };
 
-  const reRoute = (route) =>{
+  const reRoute = (route) => {
     props.history.push(route);
   }
 
-  const menuId = 'primary-search-account-menu';
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
-  );
+  const search = () =>{
+    //Check if search field is not empty
+    if (myInput.current.value.trim() !== ""){
+    //Make API call
+    axios.get(`http://api.giphy.com/v1/gifs/search?q=${searchTerm}&api_key=QowsD5SieJdG8UlGAxisfSMQ9sk8ytrV&limit=5&offset=1`)
+    .then(data=>{
+      console.log(data);
+    })
+    .catch(err=>{
 
-  const mobileMenuId = 'primary-search-account-menu-mobile';
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
-  );
+    });
+    }
+  }
+
+  const updateSearch = (e) =>{
+    //Change searchTerm state
+    setSearchTerm(e.target.value);
+  }
 
   return (
     <div className={classes.grow}>
       <AppBar position="static">
         <Toolbar>
           <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-              className={clsx(classes.menuButton, open && classes.hide)}
-            >
-              <MenuIcon />
-            </IconButton>
-          <Typography className={classes.title} variant="h6" noWrap onClick = {()=>reRoute('/')}>
-            Contribution Tracker
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            edge="start"
+            className={clsx(classes.menuButton, open && classes.hide)}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography className={classes.title} variant="h6" noWrap onClick={() => reRoute('/')}>
+            GifApp
           </Typography>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
@@ -213,77 +151,45 @@ function NavBar(props) {
                 input: classes.inputInput,
               }}
               inputProps={{ 'aria-label': 'search' }}
+              onChange={e=>updateSearch(e)}
+              value={searchTerm}
+              inputRef={myInput}
             />
           </div>
+          <Button variant="contained" color="primary" onClick={()=>search()} >
+              Submit
+            </Button>
           <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-          </div>
-          <div className={classes.sectionMobile}>
-            <IconButton
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </div>
         </Toolbar>
       </AppBar>
       <Drawer
-          className={classes.drawer}
-          variant="persistent"
-          anchor="left"
-          open={open}
-          classes={{
-            paper: classes.drawerPaper,
-          }}
-        >
-          <div className={classes.drawerHeader}>
-            <IconButton onClick={handleDrawerClose}>
-              {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-            </IconButton>
-          </div>
-          <Divider />
-          <List>
-            {[['Dashboard', '/dashboard', <DashboardIcon />], ['Transactions', '/transactions', <MenuBookIcon />]].map((menuItem, index) => (
-              
-                <ListItem button  key={menuItem[0]} onClick = {()=>reRoute(menuItem[1])}>
-                  <ListItemIcon>{menuItem[2]}</ListItemIcon>
-                  <ListItemText primary={menuItem[0]} />
-                </ListItem>
-              
-            ))}
-          </List>
-        </Drawer>
-      {renderMobileMenu}
-      {renderMenu}
+        className={classes.drawer}
+        variant="persistent"
+        anchor="left"
+        open={open}
+        classes={{
+          paper: classes.drawerPaper,
+        }}
+      >
+        <div className={classes.drawerHeader}>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+          </IconButton>
+        </div>
+        <Divider />
+        <List>
+          {[['Search Gifs', '/', <DashboardIcon />], ['About Deveoper', '/about', <MenuBookIcon />]].map((menuItem, index) => (
+
+            <ListItem button key={menuItem[0]} onClick={() => reRoute(menuItem[1])}>
+              <ListItemIcon>{menuItem[2]}</ListItemIcon>
+              <ListItemText primary={menuItem[0]} />
+            </ListItem>
+
+          ))}
+        </List>
+      </Drawer>
     </div>
   );
 }
-
-
-
 
 export default withRouter(NavBar);
