@@ -1,16 +1,24 @@
 import {
-	SEARCH
+	SEARCH, SINGLE
 } from '../constants/action-types';
 
 const searchState = {
-	gifContent: []
+	searchTerm: "",
+	gifContent: {},
+	singleGifContent: {}
 };
 
 
 export default function rootReducer(state = searchState, action) {
 	if (action.type === SEARCH) {
 		return Object.assign({},state,{
-			gifContent: action.gifContent
+			gifContent: action.searchGif.gifContent,
+			searchTerm: action.searchGif.searchTerm
+		})
+	}
+	if (action.type === SINGLE) {
+		return Object.assign({},state,{
+			singleGifContent: action.sinleGifContent
 		})
 	}
 	return state;

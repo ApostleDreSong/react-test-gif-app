@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import NavBar from './components/appbar';
 import Dashboard from './components/dashboard';
+import SingleGif from './components/SingleGif';
 import About from './components/about';
 import {Container} from '@material-ui/core';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
@@ -18,6 +19,9 @@ class App extends Component {
 						<Switch>
 							<Route exact path="/">
 								<Dashboard />
+							</Route>
+							<Route exact path="/single-gif">
+								<SingleGif />
 							</Route>
 							<Route path="/about">
 								<About />

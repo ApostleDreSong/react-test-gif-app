@@ -22,7 +22,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { storeSearch } from '../store/actions'
+import { storeSearch } from '../store/actions';
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -111,7 +111,9 @@ function NavBar(props) {
     //Check if search field is not empty
     if (myInput.current.value.trim() !== "") {
       //Make API call From store
+      props.history.push("/");
       props.storeSearch(searchTerm);
+      setSearchTerm("");
     }
   }
 
@@ -122,7 +124,7 @@ function NavBar(props) {
 
   return (
     <div className={classes.grow}>
-      <AppBar position="static">
+      <AppBar position="sticky">
         <Toolbar>
           <IconButton
             color="inherit"
@@ -188,9 +190,17 @@ function NavBar(props) {
   );
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    storeSearch: searchTerm => {
+      dispatch(storeSearch(searchTerm))
+    }
+  }
+}
+
 const NavStore = connect(
   null,
-  {storeSearch}
+  mapDispatchToProps
 );
 
 export default compose(
