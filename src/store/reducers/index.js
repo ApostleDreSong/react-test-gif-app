@@ -1,5 +1,5 @@
 import {
-	SEARCH, SINGLE, UPDATING, ERROR
+	SEARCH, SINGLE, UPDATING, ERROR, SETLIMIT
 } from '../constants/action-types';
 
 const searchState = {
@@ -7,7 +7,8 @@ const searchState = {
 	gifContent: {},
 	singleGifContent: {},
 	updating: false,
-	error: false
+	error: false,
+	limit: 2
 };
 
 
@@ -17,6 +18,11 @@ export default function rootReducer(state = searchState, action) {
 			gifContent: action.searchGif.gifContent,
 			searchTerm: action.searchGif.searchTerm,
 			error: false
+		})
+	}
+	if (action.type === SETLIMIT) {
+		return Object.assign({},state,{
+			limit: action.limit
 		})
 	}
 	if (action.type === SINGLE) {

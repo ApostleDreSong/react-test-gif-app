@@ -5,14 +5,14 @@ import SingleGif from './components/SingleGif';
 import About from './components/about';
 import {Container} from '@material-ui/core';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { PersistGate } from 'redux-persist/integration/react';
-import { persistor } from './store';
+// import { PersistGate } from 'redux-persist/integration/react';
+// import { persistor } from './store';
 
 
 class App extends Component {
 	render() {
 		return (
-			<PersistGate loading={null} persistor={persistor}>
+			// <PersistGate loading={null} persistor={persistor}>
 					<Router>
 						<NavBar />
 						<Container fixed>
@@ -29,7 +29,7 @@ class App extends Component {
 						</Switch>
 						</Container>
 					</Router>
-			</PersistGate>
+			// </PersistGate>
 		);
 	}
 }

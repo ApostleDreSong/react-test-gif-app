@@ -59,7 +59,7 @@ class About extends Component {
                         <li>Wordpress</li>
                         <li>Git</li>
                     </ul>
-                    <p>He also does a little of hybrid mobile app development with ReacNative.</p>
+                    <p>He also does a little of hybrid mobile app development with ReactNative.</p>
                     <p>Damilare has development experience with Interswitch, Zijela ICT and SahelConsulting</p>
                     <div>
                         <GitHubIcon onClick = {()=>this.reRoute('https://github.com/ApostleDreSong')}/>

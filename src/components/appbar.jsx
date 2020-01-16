@@ -9,6 +9,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
+import TextField from '@material-ui/core/TextField';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import Divider from '@material-ui/core/Divider';
@@ -22,7 +23,8 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { storeSearch } from '../store/actions';
+import { storeSearch, setLimit } from '../store/actions';
+import SearchField from './SearchField'
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -112,9 +114,19 @@ function NavBar(props) {
     if (myInput.current.value.trim() !== "") {
       //Make API call From store
       props.history.push("/");
-      props.storeSearch(searchTerm);
+      props.storeSearch(searchTerm, 0, props.limit);
       setSearchTerm("");
     }
+  }
+
+  const inputProps = {
+    min: 1,
+    max: 10,
+    "data-testid": "searchgif"
+  };
+
+  const changeLimit = (e) => {
+    props.setLimit(e.target.value);
   }
 
   const updateSearch = (e) => {
@@ -142,7 +154,7 @@ function NavBar(props) {
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
-            <InputBase
+            {/* <InputBase
               placeholder="Search…"
               classes={{
                 root: classes.inputRoot,
@@ -152,8 +164,19 @@ function NavBar(props) {
               onChange={e => updateSearch(e)}
               value={searchTerm}
               inputRef={myInput}
+            /> */}
+            <SearchField 
+            placeholder="Search…"
+            classes={{
+              root: classes.inputRoot,
+              input: classes.inputInput,
+            }}
+            onChange={e => updateSearch(e)}
+            value={searchTerm}
+            inputRef={myInput}
             />
           </div>
+          <TextField style={{width:"120px"}} label="Gif(s) per page" defaultValue={props.limit} type="number" inputProps={inputProps} onChange={e=>changeLimit(e)}/>
           <Button variant="contained" color="primary" onClick={() => search()} >
             Submit
             </Button>
@@ -192,14 +215,23 @@ function NavBar(props) {
 
 const mapDispatchToProps = dispatch => {
   return {
-    storeSearch: searchTerm => {
-      dispatch(storeSearch(searchTerm))
+    storeSearch: (searchTerm, offset, limit) => {
+      dispatch(storeSearch(searchTerm, offset, limit))
+    },
+    setLimit: limit => {
+      dispatch(setLimit(limit))
     }
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    limit: state.limit
+  }
+}
+
 const NavStore = connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 );
 

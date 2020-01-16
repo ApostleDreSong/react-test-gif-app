@@ -13,29 +13,38 @@ function Dashboard(props) {
         props.singleGif(gif);
         props.history.push("/single-gif");
     }
-    const [iniOffset, setIniOffset] = useState(props.pagination.offset);
+    const [iniOffset, setIniOffset] = useState(0);
     const handlePage = (offset) => {
-        console.log(offset);
         setIniOffset(offset);
-        props.storeSearch(props.searchTerm, offset);
+        props.storeSearch(props.searchTerm, offset, props.limit);
     }
+
+    const isEmpty = (obj) => {
+        for(var key in obj) {
+            if(obj.hasOwnProperty(key))
+                return false;
+        }
+        return true;
+    }
+
     return (
-        <div>
-            <Grid container style={{ marginTop: "10px" }} spacing={5}>
-                <Grid item xs={12}>
+        <div style={{ marginTop: "10px" }}>
+                <div>
                     {props.updating ? <Spinner /> : null}
                     {props.error ? <div style={{ color: "red" }}>There was an error retrieving your search. Please try again...</div> : null}
                     {props.updating ? null : <h2>{props.searchTerm}</h2>}
-                </Grid>
-                {props.gifContentData.map((gif, index) => {
+                </div>
+            <Grid container spacing={5}>
+                { isEmpty(props.gifContent)? null: props.gifContentData.map((gif, index) => {
                     return (
                         <Grid style={{ cursor: "pointer" }} onClick={() => singleGif(gif)} item key={index} xs={6} md={3}>
                             <img width="100%" height="250px" src={gif.images.original.url} alt="" />
                         </Grid>
                     );
-                })}
+                })
+                }
             </Grid>
-            {props.updating ? null :
+            {isEmpty(props.gifContent)? null: props.updating ? null :
                 <Pagination
                     limit={1}
                     offset={iniOffset}
@@ -49,19 +58,21 @@ function Dashboard(props) {
 
 const MapStateToProps = state => {
     return {
+        gifContent: state.gifContent,
         gifContentData: state.gifContent.data,
         pagination: state.gifContent.pagination,
         searchTerm: state.searchTerm,
         updating: state.updating,
-        error: state.error
+        error: state.error,
+        limit: state.limit
     }
 }
 
 const MapDispatchToProps = dispatch => {
     return {
         singleGif: (gif) => dispatch(singleGif(gif)),
-        storeSearch: (searchTerm, offset) => {
-            dispatch(storeSearch(searchTerm, offset))
+        storeSearch: (searchTerm, offset, limit) => {
+            dispatch(storeSearch(searchTerm, offset, limit))
         }
     }
 }
