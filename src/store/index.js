@@ -13,12 +13,8 @@ import thunk from 'redux-thunk';
 
 const middleware = [thunk];
 
-const store = createStore(
-	rootReducer,
-	compose(
-		applyMiddleware(...middleware)
-	)
-);
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(...middleware)));
 
 //let persistor = persistStore(store);
 
